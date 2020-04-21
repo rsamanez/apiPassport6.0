@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "3e88126a-033f-4588-800f-4458566ad92a",
+		"name": "apiPassport6.0",
+		"description": "This is for test an API + PASSPORT using Laravel 6.18",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ListUsers",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGZiMjU1ZmZjYmM2OGQ4YTQ0ZTYxMzczY2MxODkxMGE0YmRjZjYzOTE2YTUwNzc5YjBhNDE0NDI4N2ZhMjMxYTQyZTQ1NGYyYWRkNzU5ZWQiLCJpYXQiOjE1ODc0Mjk1MzAsIm5iZiI6MTU4NzQyOTUzMCwiZXhwIjoxNjE4OTY1NTMwLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.OdOG06wMeRLNtO1_qAhGVj6MLGojBi5vgqAu5gmJ3ekZfltjhKE5wp2ViOKs9x4qx2O7h4pKgwSR_Liut7dR4SLD0ef34h-nqwXzYRRBeKpqCSMNizpIGlk0kyoCDwmE4z6cRKK9aRPSBnFsX_jrOI25XLX16OG5HLTe_qRFEnHvUVnf4-ZAZDIJO0XtLGAvIqmRuw4nB4ChqaurZG3YFAXvZ3PUnkgT9FTGQm6tVWiHnoHZTbVEjBWloAlSm65rGWMvyk7prGjykVrx_qD1Pvui0Rmn_eMvg_THjzrECC9V4TSerpS8vaGWVh2EJZVVbX8QN2G6YHG0nmB5NyZzpgW5Fy9OYfNHf1-NcsLj6K1_YpH8eUHgiaIHyB4fZUgq-6n-UYo0AEHv23Hs0rFOEj_SD3DL9GBxdV00zdCj0kisxZrSqf80UyXZxlXbmitVs9cLMiDck3IvQ2ctOJ0e5k4ou7gM-mPznH17WDtkxIxWU9yd6CE4eptUnKq-XR2KGTF9o5o7L7oFLU7aO2PlSaelJWWLyd4MzlHuH6AIuJzPo2gFGQEwNkrcgpO3IcmLRIzDbTBi1RbsLnK5UnXA3ivGt-CYd5aiM9Mvio1D5hIkHnZte4cNuA6uyZ2de-pJGv8yIobaf8_xS4iA0n0iyzOJ36i8QWLc4n084R8DMF4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/v1/listUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"listUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGZiMjU1ZmZjYmM2OGQ4YTQ0ZTYxMzczY2MxODkxMGE0YmRjZjYzOTE2YTUwNzc5YjBhNDE0NDI4N2ZhMjMxYTQyZTQ1NGYyYWRkNzU5ZWQiLCJpYXQiOjE1ODc0Mjk1MzAsIm5iZiI6MTU4NzQyOTUzMCwiZXhwIjoxNjE4OTY1NTMwLCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.OdOG06wMeRLNtO1_qAhGVj6MLGojBi5vgqAu5gmJ3ekZfltjhKE5wp2ViOKs9x4qx2O7h4pKgwSR_Liut7dR4SLD0ef34h-nqwXzYRRBeKpqCSMNizpIGlk0kyoCDwmE4z6cRKK9aRPSBnFsX_jrOI25XLX16OG5HLTe_qRFEnHvUVnf4-ZAZDIJO0XtLGAvIqmRuw4nB4ChqaurZG3YFAXvZ3PUnkgT9FTGQm6tVWiHnoHZTbVEjBWloAlSm65rGWMvyk7prGjykVrx_qD1Pvui0Rmn_eMvg_THjzrECC9V4TSerpS8vaGWVh2EJZVVbX8QN2G6YHG0nmB5NyZzpgW5Fy9OYfNHf1-NcsLj6K1_YpH8eUHgiaIHyB4fZUgq-6n-UYo0AEHv23Hs0rFOEj_SD3DL9GBxdV00zdCj0kisxZrSqf80UyXZxlXbmitVs9cLMiDck3IvQ2ctOJ0e5k4ou7gM-mPznH17WDtkxIxWU9yd6CE4eptUnKq-XR2KGTF9o5o7L7oFLU7aO2PlSaelJWWLyd4MzlHuH6AIuJzPo2gFGQEwNkrcgpO3IcmLRIzDbTBi1RbsLnK5UnXA3ivGt-CYd5aiM9Mvio1D5hIkHnZte4cNuA6uyZ2de-pJGv8yIobaf8_xS4iA0n0iyzOJ36i8QWLc4n084R8DMF4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/v1/getUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"getUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/api/v1/login?email=me@rsamanez.com&password=12345678",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"login"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "me@rsamanez.com"
+						},
+						{
+							"key": "password",
+							"value": "12345678"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register New User",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/api/v1/register?name=Juan Agena&email=ajena@rsamanez.com&password=12345678&c_password=12345678",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"register"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Juan Agena"
+						},
+						{
+							"key": "email",
+							"value": "ajena@rsamanez.com"
+						},
+						{
+							"key": "password",
+							"value": "12345678"
+						},
+						{
+							"key": "c_password",
+							"value": "12345678"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
