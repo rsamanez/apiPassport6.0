@@ -7,71 +7,167 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+## Create REST API with Passport authentication Laravel 6
+```
+composer create-project --prefer-dist laravel/laravel apiPassport6.0 "6.*"
+composer require laravel/passport
+```
+Configure your Database access   
+Sample SqLite3
+```
+// change in .env
+DB_CONNECTION=sqlite
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+// add database file
+touch database/database.sqlite
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```
+register providers. Open config/**app.php** . and put the bellow code :
+```
+'providers' => [
+     ....
+     /*
+      * Package Service Providers...
+      */
+     Laravel\Passport\PassportServiceProvider::class,
+     .....
+```
+app/providers/**AppServiceProvider.php** and put the two line of code inside a boot method :
+```
+namespace App\Providers;
+Use Schema;
+     .....
+     public function boot()
+    {
+        Schema::defaultStringLength(191);
+    }
+```
+Run Migration and Install Laravel Passport
+```
+php artisan migrate
+php artisan passport:install
+```
+### Laravel Passport Configuration
+Next open app/**User.php** file and put the below code
+```
+namespace App;
+use Laravel\Passport\HasApiTokens;
+    ....
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+class User extends Authenticatable
+{
+    use HasApiTokens,Notifiable;
+    
+ .....
+```
+Next Register passport routes in App/Providers/**AuthServiceProvider.php**
+```
+namespace App\Providers;
+use Laravel\Passport\Passport;
+    .....
+    public function boot() 
+    { 
+        $this->registerPolicies(); 
+        Passport::routes(); 
+    }
+    ......
+```
+Next goto config/**auth.php** and Change the api driver to session to passport
+```
+   .....
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
 
-## Learning Laravel
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+    ],
+   .....
+```
+Create API Routes.  
+goto routes/**api.php** and create below routes here 
+```
+Route::prefix('v1')->group(function(){
+    Route::post('login', 'Api\AuthController@login');
+    Route::post('register', 'Api\AuthController@register');
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('getUser', 'Api\AuthController@getUser');
+        Route::get('listUser', 'Api\AuthController@listUser');
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    });
+});
+.....
+```
+Create an API controller
+```
+php artisan make:controller Api/AuthController
+```
+create methods in app/Http/Controllers/Api/**AuthController.php**
+```
+<?php
+namespace App\Http\Controllers\Api;
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 
-## Laravel Sponsors
+class AuthController extends Controller
+{
+    public $successStatus = 200;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    public function register(Request $request) {
+        $validator = Validator::make($request->all(),
+            [
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'c_password' => 'required|same:password',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);                        }
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+        $success['token'] =  $user->createToken('AppName')->accessToken;
+        return response()->json(['success'=>$success], $this->successStatus);
+    }
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
 
-## Contributing
+    public function login(){
+        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+            $user = Auth::user();
+            $success['token'] =  $user->createToken('AppName')-> accessToken;
+            return response()->json(['success' => $success], $this-> successStatus);
+        } else{
+            return response()->json(['error'=>'Unauthorised'], 401);
+        }
+    }
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    public function getUser() {
+        $user = Auth::user();
+        return response()->json(['success' => $user], $this->successStatus);
+    }
 
-## Code of Conduct
+    public function listUser(){
+        $users = User::all();
+        return response()->json(['success' => $users], $this->successStatus);
+    }
+}
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+Test your API using the Postman Collection.  
+Postman/apiPassport6.0.postman_collection.json
+```
+php artisan serve
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
